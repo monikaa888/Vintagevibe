@@ -1,0 +1,126 @@
+/* General Styling */
+* {
+    font-family: 'Outfit', sans-serif;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    line-height: 1.5;
+}
+
+:root {
+    --black: #4B3832; /* Rich, deep brown */
+    --brown: #8E6E53; /* Classic brown */
+    --brown-d-1: #7A5A40; /* Darker shade for hover */
+    --grey-l-1: #EFE6DD; /* Soft, vintage cream */
+    --grey: #D4C2A8; /* Warm grey */
+    --grey-d-1: #B29D84; /* Darker warm grey */
+    --yellow: #C19A6B; /* Warm brown-yellow for accents */
+    --white: #F5F0EB; /* Warm, vintage white */
+    --red: #A85D32; /* Soft, vintage reddish-brown */
+}
+
+/* Body */
+body {
+    display: flex;
+    min-height: 100vh;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(90deg, var(--grey-l-1) 31px, transparent 1px) 50%, linear-gradient(180deg, var(--grey-l-1) 31px, var(--grey-d-1) 1px) 50%;
+    background-size: 32px 32px;
+    color: var(--black);
+    padding: 0 1rem;
+}
+
+/* Hide bottom transition effect */
+body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    transition: bottom .5s cubic-bezier(0.65, 0.05, 0.36, 1);
+    background: var(--brown);
+    z-index: 9999;
+}
+body.hide::before {
+    bottom: 100%;
+}
+
+/* Margins */
+.mb-4 {
+    margin-bottom: 1rem;
+}
+
+/* Buttons */
+.btn {
+    padding: .75rem 1.5rem;
+    background: transparent;
+    border: 1px solid var(--brown);
+    color: var(--brown);
+    border-radius: .25rem;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background .2s, color .2s;
+}
+.btn-brown {
+    background: var(--brown);
+    color: var(--white);
+    border: none; /* Remove border for brown buttons */
+}
+.btn-brown:hover {
+    background: var(--brown-d-1);
+    color: var(--white);
+}
+
+/* Form Styles */
+.form-wrapper {
+    padding: 2rem;
+    background: var(--white);
+    border-radius: .25rem;
+    max-width: 576px;
+    width: 100%;
+    box-shadow: 0 1rem 2rem rgba(0, 0, 0, .1); /* Slightly more vintage shadow */
+    margin: 1rem 0;
+}
+.form-title {
+    font-size: 2rem;
+    margin-bottom: .5rem;
+    font-weight: 600;
+    color: var(--black);
+}
+.form-detail {
+    color: var(--grey-d-1);
+    margin-bottom: 2rem;
+}
+.form-group {
+    margin-bottom: 1.5rem;
+}
+.form-group input {
+    width: 100%;
+    padding: .75rem 1rem;
+    border: 1px solid var(--grey);
+    outline: none;
+    border-radius: .25rem;
+    font-size: 1rem;
+}
+.form-group input:focus,
+.form-group input:not(:placeholder-shown) {
+    background: var(--grey-l-1);
+}
+.form-group input::placeholder {
+    color: var(--grey-d-1);
+}
+.form-group label {
+    display: inline-block;
+    margin-bottom: .25rem;
+}
+label.required::after {
+    content: ' *';
+    color: var(--red);
+}
+.form-link {
+    color: var(--brown);
+    text-decoration: none;
+}
+.form-link:hover {
+    text-decoration: underline;
+}

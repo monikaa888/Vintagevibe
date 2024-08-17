@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vintage Vibe - Timeless Fashion</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css"/>
+    <link rel="stylesheet" href="style.css">
+    
+    <style>
+        .user-info {
+            position: relative;
+            cursor: pointer;
+            padding: 10px;
+        }
+
+        #user-welcome {
+            font-size: 20px; 
+            font-weight: bold;
+            color: #8b5e3c; /* Vintage brown color */
+            margin: 0;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center; 
+            gap: 10px; 
+        }
+
+        .btn {
+            padding: 5px 10px;
+            border: 1px solid #8b5e3c; /* Vintage brown color */
+            border-radius: 3px;
+            background-color: transparent;
+            color: #8b5e3c; /* Vintage brown color */
+            font-size: 14px;
+            font-weight: normal;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
+            outline: none;
+        }
+
+        .logout-btn {
+            margin: 0;
+        }
+
+        .logout-btn:hover {
+            background-color: rgba(139, 94, 60, 0.1); /* Light vintage brown */
+            color: #5c3a1e; /* Darker vintage brown */
+        }
+
+        .logout-btn:active {
+            background-color: rgba(139, 94, 60, 0.2); /* Darker vintage brown */
+            color: #3e2a17; /* Even darker vintage brown */
+        }
+
+        .login-btn {
+            display: none;
+        }
+
+        .login-btn:hover {
+            background-color: rgba(139, 94, 60, 0.1); /* Light vintage brown */
+            color: #5c3a1e; /* Darker vintage brown */
+        }
+
+        .login-btn:active {
+            background-color: rgba(139, 94, 60, 0.2); /* Darker vintage brown */
+            color: #3e2a17; /* Even darker vintage brown */
+        }
+
+    </style>
+    
+    <script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            
+            fetch('signinup/get_user_info.php') 
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        document.getElementById('user-welcome').textContent = 'Welcome, Guest!';
+                        document.getElementById('logout-button').style.display = 'none';
+                        document.getElementById('login-button').style.display = 'block'; 
+                    } else {
+                        document.getElementById('user-welcome').textContent = `Welcome, ${data.first_name}!`;
+                        document.getElementById('logout-button').style.display = 'block'; 
+                        document.getElementById('login-button').style.display = 'none'; 
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching user info:', error);
+                    document.getElementById('user-welcome').textContent = 'Welcome, Guest!';
+                    document.getElementById('logout-button').style.display = 'none';
+                    document.getElementById('login-button').style.display = 'block';
+                });
+
+            const swiper = new Swiper('.product-slider', {
+                slidesPerView: 1,
+                spaceBetween: 10,
+                navigation: {
+                    nextEl: '.swiper-button-next',
+                    prevEl: '.swiper-button-prev',
+                },
+                breakpoints: {
+                    640: {
+                        slidesPerView: 2,
+                        spaceBetween: 20,
+                    },
+                    768: {
+                        slidesPerView: 3,
+                        spaceBetween: 30,
+                    },
+                    1024: {
+                        slidesPerView: 4,
+                        spaceBetween: 40,
+                    },
+                },
+            });
+
+            document.getElementById('get-started-btn')?.addEventListener('click', function() {
+                window.location.href = 'signinup/login.php';
+            });
+
+            document.getElementById('logout-button')?.addEventListener('click', function() {
+                fetch('signinup/logout.php', { method: 'POST' })
+                    .then(response => response.text())
+                    .then(() => {
+                        document.getElementById('user-welcome').textContent = 'Welcome, Guest!';
+                        document.getElementById('logout-button').style.display = 'none'; 
+                        document.getElementById('login-button').style.display = 'block'; 
+                    })
+                    .catch(error => console.error('Error logging out:', error));
+            });
+
+            document.getElementById('login-button')?.addEventListener('click', function() {
+                window.location.href = 'signinup/login.php';
+            });
+        });
+    </script>
+    
+</head>
+<body style="color: #8b5e3c;">
+    <!-- header section -->
+    <header class="header">
+        <a href="#" class="logo"><i class="fas fa-tshirt" style="color: #8b5e3c;"></i> Vintage Vibe</a>
+        <nav class="navbar">
+            <div id="nav-close" class="fas fa-times"></div>
+            <a href="#home">Home</a>
+            <a href="#about">About</a>
+            <a href="#shop">Shop</a>
+            <a href="#collections">Collections</a>
+            <a href="#reviews">Reviews</a>
+            <a href="#blog">Blog</a>
+        </nav>
+
+        <div class="icons">
+            <div id="menu-btn" class="fas fa-bars"></div>
+            <a href="#cart" class="cart-icon">
+                <i class="fas fa-shopping-cart"></i>
+                <span id="cart-count">0</span>
+            </a>
+            <div id="search-btn" class="fas fa-search"></div>
+        </div>
+
+        <!-- User Info Display -->
+        <div class="user-info">
+            <p id="user-welcome">Welcome!</p>
+            <button id="logout-button" class="btn logout-btn">Logout</button>
+            <button id="login-button" class="btn login-btn" style="display: none;">Login</button>
+        </div>
+        
+    </header>
+    <!-- header section ends -->
+
+    <!-- search form -->
+    <div class="search-form">
+        <div id="close-search" class="fas fa-times"></div>
+        <form action="">
+            <input type="search" name="" placeholder="Search for destinations in Nepal..." id="search-box">
+            <label for="search-box" class="fas fa-search"></label>
+        </form>
+    </div>
+    <!-- search form ends -->
+
+<!-- home section -->
+<section class="home" id="home">
+    <div class="swiper home-slider">
+        <div class="swiper-wrapper">
+            <div class="swiper-slide">
+                <div class="box" style="background: url(images/home-bg-1.jpg) no-repeat;">
+                    <div class="content">
+                        <span>Step into the</span>
+                        <h3>World of Timeless Fashion</h3>
+                        <p>Embrace the elegance of vintage styles that never fade.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="swiper-slide">
+                <div class="box second" style="background: url(images/home-bg-2.jpg) no-repeat;">
+                    <div class="content">
+                        <span>Explore the</span>
+                        <h3>Art of Classic Design</h3>
+                        <p>Discover clothing that captures the essence of bygone eras.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="swiper-slide">
+                <div class="box" style="background: url(images/home-bg-3.jpg) no-repeat;">
+                    <div class="content">
+                        <span>Vintage Vibes</span>
+                        <h3>For the Modern Soul</h3>
+                        <p>Uncover fashion that tells a story of style and grace.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="swiper-button-next"></div>
+        <div class="swiper-button-prev"></div>
+    </div>
+</section>
+<!-- home section ends -->
+
+<!-- category section -->
+<section class="category">
+    <h1 class="heading">Explore Our Collections</h1>
+    <div class="box-container">
+        <div class="box">
+            <img src="images/1.jpg" alt="">
+            <h3>Vintage Dresses</h3>
+            <p>Elegant and timeless, our dresses capture the spirit of a classic era.</p>
+            <a href="#" class="btn">Discover More</a>
+        </div>
+
+        <div class="box">
+            <img src="images/2.jpg" alt="">
+            <h3>Retro Accessories</h3>
+            <p>Complete your look with accessories that echo a stylish past.</p>
+            <a href="#" class="btn">Discover More</a>
+        </div>
+
+        <div class="box">
+            <img src="images/3.jpg" alt="">
+            <h3>Classic Outerwear</h3>
+            <p>Coats and jackets that combine vintage charm with modern comfort.</p>
+            <a href="#" class="btn">Discover More</a>
+        </div>
+
+        <div class="box">
+            <img src="images/4.jpg" alt="">
+            <h3>Timeless Footwear</h3>
+            <p>Step back in time with shoes that are as enduring as they are elegant.</p>
+            <a href="#" class="btn">Discover More</a>
+        </div>
+    </div>
+</section>
+<!-- category section ends -->
+
+<!-- about section -->
+<section class="about" id="about">
+    <div class="image">
+        <img src="images/O.jpg" alt="">
+    </div>
+    <div class="content">
+        <h3>Crafting Timeless Elegance</h3>
+        <p>At Vintage Vibe, we are passionate about bringing the charm of classic fashion to the modern world. Our curated collections are designed to offer you pieces that embody the essence of style from eras past.</p>
+        <p>Whether you're looking for something chic or simply nostalgic, our selections promise to add a touch of timeless elegance to your wardrobe.</p>
+        <a href="#" class="btn">Learn More</a>
+    </div>
+</section>
+<!-- about section ends -->
+
+
+<!-- Shop section starts here -->
+<section class="shop" id="shop">
+    <h1 class="heading">Featured Products</h1>
+    <div class="swiper product-slider">
+        <div class="swiper-wrapper">
+            <div class="swiper-slide slide">
+                <div class="image">
+                    <img src="images/a.jpg" alt="">
+                    <div class="icons">
+                        <a href="#" class="fas fa-shopping-cart add-to-cart" data-product-id="1"></a>
+                        <a href="#" class="fas fa-eye"></a>
+                        <a href="#" class="fas fa-share"></a>
+                    </div>
+                </div>
+                <div class="content">
+                    <h3>Tshirts, shorts, converse</h3>
+                    <div class="price">Rs 2,500</div>
+                    <div class="stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="swiper-slide slide">
+                <div class="image">
+                    <img src="images/b.jpg" alt="">
+                    <div class="icons">
+                        <a href="#" class="fas fa-shopping-cart add-to-cart" data-product-id="2"></a>
+                        <a href="#" class="fas fa-eye"></a>
+                        <a href="#" class="fas fa-share"></a>
+                    </div>
+                </div>
+                <div class="content">
+                    <h3>Zipper hoodie, converse, and cargo pant</h3>
+                    <div class="price">Rs 6,500</div>
+                    <div class="stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="swiper-slide slide">
+                <div class="image">
+                    <img src="images/c.jpg" alt="">
+                    <div class="icons">
+                        <a href="#" class="fas fa-shopping-cart add-to-cart" data-product-id="3"></a>
+                        <a href="#" class="fas fa-eye"></a>
+                        <a href="#" class="fas fa-share"></a>
+                    </div>
+                </div>
+                <div class="content">
+                    <h3>Hoodie, pant, and martin</h3>
+                    <div class="price">Rs 4,000</div>
+                    <div class="stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="swiper-slide slide">
+                <div class="image">
+                    <img src="images/d.jpg" alt="">
+                    <div class="icons">
+                        <a href="#" class="fas fa-shopping-cart add-to-cart" data-product-id="4"></a>
+                        <a href="#" class="fas fa-eye"></a>
+                        <a href="#" class="fas fa-share"></a>
+                    </div>
+                </div>
+                <div class="content">
+                    <h3>Leather jacket and pant</h3>
+                    <div class="price">Rs 7,500</div>
+                    <div class="stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="swiper-slide slide">
+                <div class="image">
+                    <img src="images/e.jpg" alt="">
+                    <div class="icons">
+                        <a href="#" class="fas fa-shopping-cart add-to-cart" data-product-id="5"></a>
+                        <a href="#" class="fas fa-eye"></a>
+                        <a href="#" class="fas fa-share"></a>
+                    </div>
+                </div>
+                <div class="content">
+                    <h3>Formal set</h3>
+                    <div class="price">Rs 3,000</div>
+                    <div class="stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="swiper-slide slide">
+                <div class="image">
+                    <img src="images/f.jpg" alt="">
+                    <div class="icons">
+                        <a href="#" class="fas fa-shopping-cart add-to-cart" data-product-id="6"></a>
+                        <a href="#" class="fas fa-eye"></a>
+                        <a href="#" class="fas fa-share"></a>
+                    </div>
+                </div>
+                <div class="content">
+                    <h3>Tshirts and shorts</h3>
+                    <div class="price">Rs 2,000</div>
+                    <div class="stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="swiper-button-next"></div>
+        <div class="swiper-button-prev"></div>
+    </div>
+</section>
+<!-- Shop section ends -->
+
+
+<!-- Package section starts here -->
+<section class="packages" id="packages">
+    <h1 class="heading">Timeless Wardrobe</h1>
+    <div class="box-container">
+        <!-- Package 1 -->
+        <div class="box">
+            <div class="image">
+                <img src="images/p1.jpg" alt="Vintage Essentials Combo">
+            </div>
+            <div class="content">
+                <h3>Essentials Combo</h3>
+                <p>Step into a classic era with our Essentials Combo. Embrace the timeless elegance of well-crafted pieces that define a truly vintage look.</p>
+                <div class="price">Rs 5,000</div>
+                <a href="#" class="btn book-now" data-package-id="1">Shop Now</a>
+            </div>
+        </div>
+
+        <!-- Package 2 -->
+        <div class="box">
+            <div class="image">
+                <img src="images/p2.jpg" alt="Vintage Gown and Top">
+            </div>
+            <div class="content">
+                <h3>Gown and Top</h3>
+                <p>Explore the grace of yesteryears with our elegant Gown and Top collection. Perfect for making a statement at any vintage-themed event.</p>
+                <div class="price">Rs 8,000</div>
+                <a href="#" class="btn book-now" data-package-id="2">Shop Now</a>
+            </div>
+        </div>
+
+        <!-- Package 3 -->
+        <div class="box">
+            <div class="image">
+                <img src="images/p3.png" alt="Vintage Jeans and Shirt">
+            </div>
+            <div class="content">
+                <h3>Jeans and Shirt</h3>
+                <p>Rediscover the rugged charm of classic denim with our Jeans and Shirt set. A staple look that never goes out of style.</p>
+                <div class="price">Rs 3,500</div>
+                <a href="#" class="btn book-now" data-package-id="3">Shop Now</a>
+            </div>
+        </div>
+
+        <!-- Package 4 -->
+        <div class="box">
+            <div class="image">
+                <img src="images/p4.jpg" alt="Vintage Cami Top, Jacket, and Shorts">
+            </div>
+            <div class="content">
+                <h3>Cami Top, Jacket, and Shorts</h3>
+                <p>Capture the essence of a bygone summer with our Cami Top, Jacket, and Shorts set. The perfect blend of comfort and vintage flair.</p>
+                <div class="price">Rs 7,500</div>
+                <a href="#" class="btn book-now" data-package-id="4">Shop Now</a>
+            </div>
+        </div>
+
+        <!-- Package 5 -->
+        <div class="box">
+            <div class="image">
+                <img src="images/p6.jpg" alt="Vintage Oversized T-Shirts, Converse, and Shorts">
+            </div>
+            <div class="content">
+                <h3>Oversized T-Shirts, Converse, and Shorts</h3>
+                <p>Embrace the laid-back vibe of the past with our Oversized T-Shirts, Converse, and Shorts combo. Effortless style for every vintage lover.</p>
+                <div class="price">Rs 4,000</div>
+                <a href="#" class="btn book-now" data-package-id="5">Shop Now</a>
+            </div>
+        </div>
+
+        <!-- Package 6 -->
+        <div class="box">
+            <div class="image">
+                <img src="images/f.jpg" alt="Vintage T-Shirts and Shorts">
+            </div>
+            <div class="content">
+                <h3>T-Shirts and Shorts</h3>
+                <p>Step back in time with our T-Shirts and Shorts set, perfect for reliving the casual, carefree days of a vintage summer.</p>
+                <div class="price">Rs 6,000</div>
+                <a href="#" class="btn book-now" data-package-id="6">Shop Now</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- Package section ends -->
+
+<script src="cart.js"></script>
+
+<!-- Cart section starts here -->
+<section class="cart" id="cart">
+    <h1 class="heading">Your Timeless Finds</h1>
+    <div class="cart-items" id="cart-items">
+        <!-- Cart items will be dynamically added here -->
+    </div>
+    <div class="cart-summary">
+        <div style="text-align: center;">
+            <a href="checkout.php" class="btn checkout" style="display: inline-block; margin: 0 10px;">Proceed to Checkout</a>
+            <button id="clear-cart" class="btn clear-cart" style="display: inline-block; margin: 0 10px;">Clear Cart</button>
+        </div>
+    </div>
+</section>
+<!-- Cart section ends -->
+
+
+<!-- reviews section -->
+<section class="reviews" id="reviews">
+    <h1 class="heading">Client Reviews</h1>
+    <div class="swiper review-slider">
+        <div class="swiper-wrapper">
+            <!-- Review 1 -->
+            <div class="swiper-slide slide">
+                <p class="text">"I adore the vintage tee and denim shorts set! The quality is top-notch, and the style is just perfect. I received so many compliments."</p>
+                <div class="user">
+                    <img src="images/de.jpg" alt="Emily Carter">
+                    <div class="info">
+                        <h3>Jack james</h3>
+                        <span>Fashion Enthusiast</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Review 2 -->
+            <div class="swiper-slide slide">
+                <p class="text">"The retro leather jacket is a game-changer! It's stylish, comfortable, and makes a bold statement. A must-have for any vintage lover."</p>
+                <div class="user">
+                    <img src="images/pic-2.png" alt="Michael Smith">
+                    <div class="info">
+                        <h3>Michael Smith</h3>
+                        <span>Photographer</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Review 3 -->
+            <div class="swiper-slide slide">
+                <p class="text">"The vintage hoodie and trousers are fantastic. They’re cozy and look great together. Perfect for those laid-back weekends!"</p>
+                <div class="user">
+                    <img src="images/pic-3.png" alt="Sophia Lee">
+                    <div class="info">
+                        <h3>Sophia Lee</h3>
+                        <span>Casual Wear Lover</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Review 4 -->
+            <div class="swiper-slide slide">
+                <p class="text">"I absolutely love the classic formal set. It fits like a glove and exudes elegance. Ideal for any vintage-themed event."</p>
+                <div class="user">
+                    <img src="images/pic-4.png" alt="James Brown">
+                    <div class="info">
+                        <h3>James Brown</h3>
+                        <span>Vintage Collector</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Review 5 -->
+            <div class="swiper-slide slide">
+                <p class="text">"The tailored cargo pants and hoodie combo are my new go-to for casual outings. The vintage feel with modern comfort is unbeatable."</p>
+                <div class="user">
+                    <img src="images/pic-5.png" alt="Linda Patel">
+                    <div class="info">
+                        <h3>Linda Patel</h3>
+                        <span>Streetwear Enthusiast</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Review 6 -->
+            <div class="swiper-slide slide">
+                <p class="text">"The formal leather jacket is incredible. It’s not only stylish but also versatile, perfect for both day and night wear."</p>
+                <div class="user">
+                    <img src="images/pic-6.png" alt="David Wilson">
+                    <div class="info">
+                        <h3>David Wilson</h3>
+                        <span>Style Guru</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>   
+</section>
+<!-- reviews section ends -->
+
+<!-- services section -->
+<section class="services">
+    <h1 class="heading">What We Offer</h1>
+    <div class="box-container">
+        <!-- Service 1 -->
+        <div class="box">
+            
+            <h3>Vintage Clothing Collection</h3>
+            <p>Explore our extensive collection of timeless vintage clothing, handpicked for style, quality, and authenticity. From classic dresses to retro jackets, find your perfect piece.</p>
+            <a href="#" class="btn">Shop Now</a>
+        </div>
+
+        <!-- Service 2 -->
+        <div class="box">
+            
+            <h3>Custom Vintage Styling</h3>
+            <p>Work with our expert stylists to create your own unique vintage look. Whether you’re dressing for a special occasion or updating your wardrobe, we offer personalized styling services.</p>
+            <a href="#" class="btn">Book a Session</a>
+        </div>
+
+        <!-- Service 3 -->
+        <div class="box">
+            
+            <h3>Vintage Accessories</h3>
+            <p>Complete your vintage ensemble with our collection of accessories. From classic hats to chic handbags, find the perfect finishing touch to elevate your look.</p>
+            <a href="#" class="btn">Discover More</a>
+        </div>
+
+        <!-- Service 4 -->
+        <div class="box">
+            
+            <h3>Expert Alterations</h3>
+            <p>Ensure your vintage clothing fits like a dream with our professional alteration services. We specialize in tailoring vintage garments to perfection.</p>
+            <a href="#" class="btn">Get Started</a>
+        </div>
+
+        <!-- Service 5 -->
+        <div class="box">
+            
+            <h3>Sustainable Fashion</h3>
+            <p>Embrace sustainable fashion with our vintage pieces. By choosing vintage, you’re supporting a more eco-friendly and sustainable way of dressing.</p>
+            <a href="#" class="btn">Learn More</a>
+        </div>
+
+        <!-- Service 6 -->
+        <div class="box">
+           
+            <h3>Vintage Style Guides</h3>
+            <p>Get inspired by our vintage style guides. Learn how to incorporate vintage pieces into your modern wardrobe and create looks that stand the test of time.</p>
+            <a href="#" class="btn">Read Our Blog</a>
+        </div>
+    </div>
+</section>
+<!-- services section ends -->
+
+
+<!-- blog section -->
+<section class="blogs" id="blogs">
+    <h1 class="heading">Our Daily Posts</h1>
+    <div class="swiper blogs-slider">
+        <div class="swiper-wrapper">
+
+            <!-- Blog Post 1 -->
+            <div class="swiper-slide slide">
+                <img src="images/icon.jpg" alt="Vintage Style Icons">
+                <div class="icons">
+                    <a href="#"><i class="fas fa-calendar"></i> 1st August 2024</a>
+                    <a href="#"><i class="fas fa-user"></i> by Jane Doe</a>
+                </div>
+                <h3>Vintage Style Icons</h3>
+                <p>Explore the timeless style of vintage icons and how you can emulate their looks today. From Audrey Hepburn to James Dean, get inspired by the greats.</p>
+                <a href="#" class="btn">Read More</a>
+            </div>
+
+            <!-- Blog Post 2 -->
+            <div class="swiper-slide slide">
+                <img src="images/a1 (1).jpeg" alt="How to Mix Vintage with Modern">
+                <div class="icons">
+                    <a href="#"><i class="fas fa-calendar"></i> 28th July 2024</a>
+                    <a href="#"><i class="fas fa-user"></i> by John Smith</a>
+                </div>
+                <h3>How to Mix Vintage with Modern</h3>
+                <p>Learn the art of blending vintage pieces with modern fashion. Our guide will help you create a balanced and stylish look that’s uniquely yours.</p>
+                <a href="#" class="btn">Read More</a>
+            </div>
+
+            <!-- Blog Post 3 -->
+            <div class="swiper-slide slide">
+                <img src="images/a1 (3).jpg" alt="Vintage Shopping Tips">
+                <div class="icons">
+                    <a href="#"><i class="fas fa-calendar"></i> 15th July 2024</a>
+                    <a href="#"><i class="fas fa-user"></i> by Emily Clarke</a>
+                </div>
+                <h3>Vintage Shopping Tips</h3>
+                <p>Discover how to find the best vintage pieces with our shopping tips. From knowing what to look for to where to shop, we’ve got you covered.</p>
+                <a href="#" class="btn">Read More</a>
+            </div>
+
+            <!-- Blog Post 4 -->
+            <div class="swiper-slide slide">
+                <img src="images/a1 (2).jpg" alt="Vintage Outfit Ideas">
+                <div class="icons">
+                    <a href="#"><i class="fas fa-calendar"></i> 8th July 2024</a>
+                    <a href="#"><i class="fas fa-user"></i> by Michael Brown</a>
+                </div>
+                <h3>Vintage Outfit Ideas</h3>
+                <p>Need some style inspiration? Check out our favorite vintage outfit ideas, perfect for any occasion, from casual days out to elegant evenings.</p>
+                <a href="#" class="btn">Read More</a>
+            </div>
+
+            <!-- Blog Post 5 -->
+            <div class="swiper-slide slide">
+                <img src="images/a1 (2).jpeg" alt="Caring for Vintage Clothes">
+                <div class="icons">
+                    <a href="#"><i class="fas fa-calendar"></i> 30th June 2024</a>
+                    <a href="#"><i class="fas fa-user"></i> by Sarah Green</a>
+                </div>
+                <h3>Caring for Vintage Clothes</h3>
+                <p>Keep your vintage clothes in pristine condition with our care guide. Learn the dos and don’ts of vintage clothing care to make your pieces last.</p>
+                <a href="#" class="btn">Read More</a>
+            </div>
+
+        </div>
+    </div>
+</section>
+<!-- blog section ends -->
+ 
+    <section class="newsletter">
+
+        <div class="content">
+            <h1 class="heading">Subscribe for the Latest Vintage Fashion Updates</h1>
+            <p>Sign up for our newsletter and stay in the loop with the latest trends, exclusive offers, and vintage fashion tips.</p>
+            <form action="#" method="post">
+                <input type="email" name="email" placeholder="Enter your email address" id="email" class="email" required>
+                <input type="submit" value="Subscribe" class="btn">
+            </form>
+        </div>
+    
+    </section>
+    
+
+    <!-- footer section starts  -->
+
+<section class="footer">
+
+    <div class="box-container">
+
+        <div class="box">
+            <h3>quick links</h3>
+            <a href="#home">home</a>
+            <a href="#about">about</a>
+            <a href="#shop">shop</a>
+            <a href="#packages">packages</a>
+            <a href="#reviews">reviews</a>
+            <a href="#blogs">blogs</a>
+        </div>
+
+        <div class="box">
+            <h3>extra links</h3>
+            <a href="#">my account</a>
+            <a href="#">my order</a>
+            <a href="#">my wishlist</a>
+            <a href="#">ask questions</a>
+            <a href="#">terms of use</a>
+            <a href="#">privacy policy</a>
+        </div>
+
+        <div class="box">
+            <h3>contact info</h3>
+            <a href=""> <i class="fas fa-phone"></i> +977-986465454 </a>
+            <a href="#"> <i class="fas fa-phone"></i> +977-9748697855 </a>
+            <a href="#"> <i class="fas fa-envelope"></i> vintagevibe@gmail.com </a>
+            <a href="#"> <i class="fas fa-map"></i>Kathmandu, Nepal </a>
+        </div>
+
+        <div class="box">
+            <h3>follow us</h3>
+            <a href="#"> <i class="fab fa-facebook-f"></i> facebook </a>
+            <a href="#"> <i class="fab fa-twitter"></i> twitter </a>
+            <a href="#"> <i class="fab fa-instagram"></i> instagram </a>
+            <a href="#"> <i class="fab fa-linkedin"></i> linkedin </a>
+            <a href="#"> <i class="fab fa-github"></i> github </a>
+        </div>
+
+    </div>
+
+    <div class="credit">created by <span>Monika Adhikari</span> | all rights reserved!</div>
+
+</section>
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.js"></script>
+    <!-- custom js -->
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,31 @@
+CREATE DATABASE vintage_vibe;
+
+USE vintage_vibe;
+
+-- Create the `user` table
+CREATE TABLE user (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(50) NOT NULL UNIQUE,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    first_name VARCHAR(50) NOT NULL,
+    last_name VARCHAR(50) NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB;
+
+-- Create the `orders` table
+CREATE TABLE orders (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    address TEXT NOT NULL,
+    product TEXT NOT NULL,
+    quantity INT NOT NULL,
+    payment_method VARCHAR(50) NOT NULL,
+    card_details TEXT,
+    total_amount DECIMAL(10, 2) NOT NULL,
+    order_date DATETIME DEFAULT CURRENT_TIMESTAMP,
+    username VARCHAR(100) NOT NULL,
+    first_name VARCHAR(100) NOT NULL,
+    last_name VARCHAR(100) NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES user(id)
+) ENGINE=InnoDB;
